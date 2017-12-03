@@ -1,6 +1,8 @@
 package com.example.hoobie.adventofcode
 
 import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.sqrt
 
 /*
 --- Day 3: Spiral Memory ---
@@ -91,11 +93,65 @@ object Day3SpiralMemory {
         return abs(x) + abs(y)
     }
 
+    // TODO: refactor
+    fun calculateFirstValueGreaterThan(input: Int): Int {
+        val squareSize = ceil(sqrt(input.toDouble())).toInt()
+
+        var current = 1
+        var direction = Pair(1, 0)
+        var xRange = squareSize..squareSize
+        var yRange = squareSize..squareSize
+        var x = squareSize
+        var y = squareSize
+
+        val memory = Array(squareSize * 2, { IntArray(squareSize * 2) })
+        memory[x][y] = 1
+
+        while (current <= input) {
+            when (direction) {
+                Pair(1, 0) -> xRange = xRange.first..xRange.last + 1
+                Pair(-1, 0) -> xRange = xRange.first - 1..xRange.last
+            }
+
+            while (x in xRange && direction.first != 0) {
+                if (current > input) break
+
+                x += direction.first
+                if (x == xRange.first && direction.first < 0) direction = Pair(0, 1)
+                if (x == xRange.last && direction.first > 0) direction = Pair(0, -1)
+                current = sumNeighbours(x, y, memory)
+                memory[x][y] = current
+            }
+
+            when (direction) {
+                Pair(0, 1) -> yRange = yRange.first..yRange.last + 1
+                Pair(0, -1) -> yRange = yRange.first - 1..yRange.last
+            }
+
+            while (y in yRange && direction.second != 0) {
+                if (current > input) break
+
+                y += direction.second
+                if (y == yRange.first && direction.second < 0) direction = Pair(-1, 0)
+                if (y == yRange.last && direction.second > 0) direction = Pair(1, 0)
+                current = sumNeighbours(x, y, memory)
+                memory[x][y] = current
+            }
+        }
+
+        return current
+    }
+
+    private fun sumNeighbours(x: Int, y: Int, memory: Array<IntArray>): Int {
+        return memory[x][y] + memory[x - 1][y - 1] + memory[x - 1][y] + memory[x][y - 1] + memory[x + 1][y + 1] +
+                memory[x + 1][y] + memory[x][y + 1] + memory[x + 1][y - 1] + memory[x - 1][y + 1]
+    }
+
 }
 
 private val input = 277678
 
 fun main(args: Array<String>) {
     println("Distance: " + Day3SpiralMemory.calculateDistance(input))
-    println("Value: " + Day3SpiralMemory.calculateDistance(input))
+    println("Value greater then input: " + Day3SpiralMemory.calculateFirstValueGreaterThan(input))
 }

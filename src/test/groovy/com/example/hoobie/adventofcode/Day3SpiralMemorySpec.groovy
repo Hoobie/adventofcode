@@ -17,4 +17,19 @@ class Day3SpiralMemorySpec extends Specification {
         1024  || 31
     }
 
+    def "should calculate a first value greater than input"() {
+        expect:
+        new Day3SpiralMemory().calculateFirstValueGreaterThan(input) == result
+
+        where:
+        input || result
+//        FIXME
+//        1     || 2
+//        2     || 4
+//        4     || 5
+        24    || 25
+        330   || 351
+        800   || 806
+    }
+
 }
