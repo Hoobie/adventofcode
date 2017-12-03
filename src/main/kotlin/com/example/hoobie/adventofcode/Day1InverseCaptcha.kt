@@ -44,9 +44,9 @@ object Day1InverseCaptcha {
     }
 
     fun solvePartTwo(input: String): Int {
-        val secondStreamsSecondHalf = input.chars().boxed().limit(input.chars().count() / 2)
-        val secondStreamsFirstHalf = input.chars().boxed().skip(input.chars().count() / 2)
-        val secondStream = Streams.concat(secondStreamsFirstHalf, secondStreamsSecondHalf)
+        val secondStreamsSecondHalf = input.chars().limit(input.chars().count() / 2)
+        val secondStreamsFirstHalf = input.chars().skip(input.chars().count() / 2)
+        val secondStream = Streams.concat(secondStreamsFirstHalf.boxed(), secondStreamsSecondHalf.boxed())
         return sumMatches(input.chars().boxed(), secondStream)
     }
 
