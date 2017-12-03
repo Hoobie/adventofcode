@@ -6,8 +6,6 @@ import java.util.stream.Stream
 /*
 --- Day 1: Inverse Captcha ---
 
---- Part One ---
-
 The captcha requires you to review a sequence of digits (your puzzle input)
 and find the sum of all digits that match the next digit in the list. The list is circular,
 so the digit after the last digit is the first digit in the list.
