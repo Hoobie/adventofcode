@@ -1,8 +1,6 @@
 package com.example.hoobie.adventofcode
 
 import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.sqrt
 
 /*
 --- Day 3: Spiral Memory ---
@@ -51,57 +49,46 @@ What is the first value written that is larger than your puzzle input?
  */
 
 object Day3SpiralMemory {
-    
+
     fun calculateDistance(input: Int): Int {
-        val squareSize = ceil(sqrt(input.toDouble())).toInt()
-        var current = squareSize * squareSize
+        var current = 1
         var direction = Pair(1, 0)
-        var xBoundaries = Pair(-1, squareSize)
-        var yBoundaries = Pair(0, squareSize)
+        var xBoundaries = Pair(0, 0)
+        var yBoundaries = Pair(0, 0)
         var x = 0
         var y = 0
-        
-        if (current % 2 != 0) {
-            direction = Pair(-1, 0)
-            yBoundaries = Pair(-1, squareSize - 1)
-            x = squareSize - 1
-            y = squareSize - 1
-        }
-        var result: Pair<Int, Int> = Pair(0, 0)
 
-        while (current != 1) {
+        while (current != input) {
             when (direction) {
-                Pair(1, 0) -> xBoundaries = Pair(xBoundaries.first, xBoundaries.second - 1)
-                Pair(-1, 0) -> xBoundaries = Pair(xBoundaries.first + 1, xBoundaries.second)
+                Pair(1, 0) -> xBoundaries = Pair(xBoundaries.first, xBoundaries.second + 1)
+                Pair(-1, 0) -> xBoundaries = Pair(xBoundaries.first - 1, xBoundaries.second)
             }
 
             while (x in xBoundaries.first..xBoundaries.second && direction.first != 0) {
-                if (current == input) result = Pair(x, y)
-                if (current == 1) break
+                if (current == input) break
 
                 x += direction.first
-                if (x == xBoundaries.first && direction.first < 0) direction = Pair(0, -1)
-                if (x == xBoundaries.second && direction.first > 0) direction = Pair(0, 1)
-                current--
+                if (x == xBoundaries.first && direction.first < 0) direction = Pair(0, 1)
+                if (x == xBoundaries.second && direction.first > 0) direction = Pair(0, -1)
+                current++
             }
-            
+
             when (direction) {
-                Pair(0, 1) -> yBoundaries = Pair(yBoundaries.first, yBoundaries.second - 1)
-                Pair(0, -1) -> yBoundaries = Pair(yBoundaries.first + 1, yBoundaries.second)
+                Pair(0, 1) -> yBoundaries = Pair(yBoundaries.first, yBoundaries.second + 1)
+                Pair(0, -1) -> yBoundaries = Pair(yBoundaries.first - 1, yBoundaries.second)
             }
 
             while (y in yBoundaries.first..yBoundaries.second && direction.second != 0) {
-                if (current == input) result = Pair(x, y)
-                if (current == 1) break
+                if (current == input) break
 
                 y += direction.second
-                if (y == yBoundaries.first && direction.second < 0) direction = Pair(1, 0)
-                if (y == yBoundaries.second && direction.second > 0) direction = Pair(-1, 0)
-                current-- 
+                if (y == yBoundaries.first && direction.second < 0) direction = Pair(-1, 0)
+                if (y == yBoundaries.second && direction.second > 0) direction = Pair(1, 0)
+                current++
             }
         }
-        
-        return abs(result.first - x) + abs(result.second - y)
+
+        return abs(x) + abs(y)
     }
 
 }
