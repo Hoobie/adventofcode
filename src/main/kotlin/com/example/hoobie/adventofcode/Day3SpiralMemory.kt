@@ -53,37 +53,37 @@ object Day3SpiralMemory {
     fun calculateDistance(input: Int): Int {
         var current = 1
         var direction = Pair(1, 0)
-        var xBoundaries = Pair(0, 0)
-        var yBoundaries = Pair(0, 0)
+        var xRange = 0..0
+        var yRange = 0..0
         var x = 0
         var y = 0
 
         while (current != input) {
             when (direction) {
-                Pair(1, 0) -> xBoundaries = Pair(xBoundaries.first, xBoundaries.second + 1)
-                Pair(-1, 0) -> xBoundaries = Pair(xBoundaries.first - 1, xBoundaries.second)
+                Pair(1, 0) -> xRange = xRange.first..xRange.last + 1
+                Pair(-1, 0) -> xRange = xRange.first - 1..xRange.last
             }
 
-            while (x in xBoundaries.first..xBoundaries.second && direction.first != 0) {
+            while (x in xRange && direction.first != 0) {
                 if (current == input) break
 
                 x += direction.first
-                if (x == xBoundaries.first && direction.first < 0) direction = Pair(0, 1)
-                if (x == xBoundaries.second && direction.first > 0) direction = Pair(0, -1)
+                if (x == xRange.first && direction.first < 0) direction = Pair(0, 1)
+                if (x == xRange.last && direction.first > 0) direction = Pair(0, -1)
                 current++
             }
 
             when (direction) {
-                Pair(0, 1) -> yBoundaries = Pair(yBoundaries.first, yBoundaries.second + 1)
-                Pair(0, -1) -> yBoundaries = Pair(yBoundaries.first - 1, yBoundaries.second)
+                Pair(0, 1) -> yRange = yRange.first..yRange.last + 1
+                Pair(0, -1) -> yRange = yRange.first - 1..yRange.last
             }
 
-            while (y in yBoundaries.first..yBoundaries.second && direction.second != 0) {
+            while (y in yRange && direction.second != 0) {
                 if (current == input) break
 
                 y += direction.second
-                if (y == yBoundaries.first && direction.second < 0) direction = Pair(-1, 0)
-                if (y == yBoundaries.second && direction.second > 0) direction = Pair(1, 0)
+                if (y == yRange.first && direction.second < 0) direction = Pair(-1, 0)
+                if (y == yRange.last && direction.second > 0) direction = Pair(1, 0)
                 current++
             }
         }
@@ -97,4 +97,5 @@ private val input = 277678
 
 fun main(args: Array<String>) {
     println("Distance: " + Day3SpiralMemory.calculateDistance(input))
+    println("Value: " + Day3SpiralMemory.calculateDistance(input))
 }
