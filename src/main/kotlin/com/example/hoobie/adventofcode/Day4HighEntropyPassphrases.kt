@@ -1,7 +1,5 @@
 package com.example.hoobie.adventofcode
 
-import java.util.*
-
 /*
 --- Day 4: High-Entropy Passphrases ---
 
@@ -42,14 +40,13 @@ object Day4HighEntropyPassphrases {
 
     private fun countValidPassphrases(input: String, mapper: (String) -> String): Int {
         return input.split("\n").map {
-            val duplicatesCount = it.split(" ")
+            it.split(" ")
                     .map { mapper(it) }
                     .groupingBy { it }
                     .eachCount()
                     .filter { it.value > 1 }
                     .count()
-            if (duplicatesCount > 0) 0 else 1
-        }.sum()
+        }.filter { it == 0 }.count()
     }
 
     private fun sortLetters(word: String): String {
