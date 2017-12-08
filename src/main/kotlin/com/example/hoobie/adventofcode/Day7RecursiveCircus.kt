@@ -111,7 +111,8 @@ object Day7RecursiveCircus {
     private fun foldChildren(programs: Map<String, Program>, parentProgram: Program, tokens: List<String>): Map<String, Program> {
         val initialMap = programs.plus(Pair(parentProgram.name, parentProgram))
 
-        return tokens.drop(3) // drop name, weight and '->'
+        return tokens
+                .drop(3) // drop name, weight and '->'
                 .fold(initialMap, { intermediateMap, rawChildName ->
                     val childName = if (rawChildName.endsWith(",")) rawChildName.dropLast(1) else rawChildName
 
