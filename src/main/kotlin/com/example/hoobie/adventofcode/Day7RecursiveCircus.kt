@@ -101,29 +101,31 @@ object Day7RecursiveCircus {
         val weight = tokens[1].drop(1).dropLast(1).toInt()
         val parentProgram = Program(parentName, weight, programs[parentName]?.parent)
 
-        return if (tokens.size > 2) {
-            foldChildren(programs, parentProgram, tokens)
-        } else {
-            programs.plus(Pair(parentName, parentProgram))
+        if (tokens.size < 3) {
+            return programs.plus(Pair(parentName, parentProgram))
         }
+        return foldChildren(programs, parentProgram, tokens)
     }
 
     private fun foldChildren(programs: Map<String, Program>, parentProgram: Program, tokens: List<String>): Map<String, Program> {
-        val initialMap = programs.plus(Pair(parentProgram.name, parentProgram))
-
         return tokens
                 .drop(3) // drop name, weight and '->'
-                .fold(initialMap, { intermediateMap, rawChildName ->
+                .fold(programs, { map, rawChildName ->
                     val childName = if (rawChildName.endsWith(",")) rawChildName.dropLast(1) else rawChildName
-
-                    intermediateMap.plus(Pair(childName,
-                            Program(childName, intermediateMap[childName]?.weight, parentProgram)))
+                    val childProgram = Program(childName, map[childName]?.weight, parentProgram)
+                    val children = parentProgram.children.plus(childProgram)
+                    
+                    map.plus(Pair(parentProgram.name, parentProgram.copy(children = children)))
+                            .plus(Pair(childName, childProgram))
                 })
     }
 
 }
 
-data class Program(val name: String, val weight: Int?, val parent: Program?)
+data class Program(val name: String,
+                   val weight: Int?,
+                   val parent: Program?,
+                   val children: List<Program> = listOf())
 
 private val inputFileName = "day7.txt"
 
