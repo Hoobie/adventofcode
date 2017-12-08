@@ -85,40 +85,44 @@ Given that exactly one program is the wrong weight, what would its weight need t
 
 object Day7RecursiveCircus {
 
-    private val programs: MutableMap<String, TowerNode> = HashMap()
-
     fun findBottomProgram(input: String): String {
-        input.split("\n")
-                .forEach {
-                    val row = it.split(" ")
-                    val name = row[0]
-                    val weight = row[1].substring(1, row[1].length - 1).toInt()
-                    val program = TowerNode(name, weight, programs[name]?.parent)
-                    programs.put(name, program)
-
-                    if (row.size > 2) {
-                        row.stream()
-                                .skip(3)
-                                .forEach {
-                                    val childName = if (it.endsWith(",")) it.substring(0, it.length - 1) else it
-                                    programs.put(childName, TowerNode(childName, programs[childName]?.weight, program))
-                                }
-                    }
-                }
-
-        return findBottomProgramTailRec(programs.values.first())
+        return input
+                .split("\n")
+                .fold(hashMapOf(), { map: Map<String, Program>, row -> foldRows(row, map) })
+                .values
+                .first { program -> program.parent == null }
+                .name
     }
 
-    private tailrec fun findBottomProgramTailRec(first: TowerNode): String {
-        if (first.parent == null) {
-            return first.name
+    private fun foldRows(row: String, programs: Map<String, Program>): Map<String, Program> {
+        val tokens = row.split(" ")
+
+        val parentName = tokens[0]
+        val weight = tokens[1].drop(1).dropLast(1).toInt()
+        val parentProgram = Program(parentName, weight, programs[parentName]?.parent)
+
+        return if (tokens.size > 2) {
+            foldChildren(programs, parentProgram, tokens)
+        } else {
+            programs.plus(Pair(parentName, parentProgram))
         }
-        return findBottomProgramTailRec(first.parent)
+    }
+
+    private fun foldChildren(programs: Map<String, Program>, parentProgram: Program, tokens: List<String>): Map<String, Program> {
+        val initialMap = programs.plus(Pair(parentProgram.name, parentProgram))
+
+        return tokens.drop(3) // drop name, weight and '->'
+                .fold(initialMap, { intermediateMap, rawChildName ->
+                    val childName = if (rawChildName.endsWith(",")) rawChildName.dropLast(1) else rawChildName
+
+                    intermediateMap.plus(Pair(childName,
+                            Program(childName, intermediateMap[childName]?.weight, parentProgram)))
+                })
     }
 
 }
 
-data class TowerNode(val name: String, val weight: Int?, val parent: TowerNode?)
+data class Program(val name: String, val weight: Int?, val parent: Program?)
 
 private val inputFileName = "day7.txt"
 
