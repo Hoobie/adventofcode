@@ -33,7 +33,7 @@ What is the largest value in any register after completing the instructions in y
 object Day8IHeardYouLikeRegisters {
 
     fun findTheLargestValue(input: String): Int {
-        return input.split("\n").map {
+        val registers = input.split("\n").map {
             val tokens = it.split(" ")
             Instruction(Operation(
                     tokens[0],
@@ -56,7 +56,9 @@ object Day8IHeardYouLikeRegisters {
                     },
                     tokens[6].toInt()
             ))
-        }.fold(hashMapOf(), { acc: Map<String, Int>, ins -> ins.eval(acc) }).values.max()!!
+        }.fold(hashMapOf(), { acc: Map<String, Int>, ins -> ins.eval(acc) })
+        
+        return registers.values.max()!!
     }
 
 }
