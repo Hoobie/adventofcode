@@ -85,13 +85,23 @@ Given that exactly one program is the wrong weight, what would its weight need t
 
 object Day7RecursiveCircus {
 
+    fun findNeededWeight(input: String): Int {
+        val programs = buildTowers(input)
+        val bottomProgram = programs.values.first { program -> program.parent == "" }
+
+        val filledPrograms = fillChildrenWeights(bottomProgram.name, programs)
+
+        return findCorrectWeights(listOf(), bottomProgram, filledPrograms).last()
+    }
+
     fun findBottomProgram(input: String): String {
+        return buildTowers(input).values.first { program -> program.parent == "" }.name
+    }
+
+    private fun buildTowers(input: String): Map<String, Program> {
         return input
                 .split("\n")
                 .fold(hashMapOf(), { map: Map<String, Program>, row -> foldRows(row, map) })
-                .values
-                .first { program -> program.parent == null }
-                .name
     }
 
     private fun foldRows(row: String, programs: Map<String, Program>): Map<String, Program> {
@@ -99,37 +109,72 @@ object Day7RecursiveCircus {
 
         val parentName = tokens[0]
         val weight = tokens[1].drop(1).dropLast(1).toInt()
-        val parentProgram = Program(parentName, weight, programs[parentName]?.parent)
+        val parentProgram = Program(parentName, weight, programs[parentName]?.parent ?: "",
+                programs[parentName]?.children ?: listOf())
 
+        val newPrograms = programs.plus(Pair(parentName, parentProgram))
         if (tokens.size < 3) {
-            return programs.plus(Pair(parentName, parentProgram))
+            return newPrograms
         }
-        return foldChildren(programs, parentProgram, tokens)
+        return foldChildren(newPrograms, parentName, tokens)
     }
 
-    private fun foldChildren(programs: Map<String, Program>, parentProgram: Program, tokens: List<String>): Map<String, Program> {
+    private fun foldChildren(programs: Map<String, Program>, parentName: String, tokens: List<String>): Map<String, Program> {
         return tokens
                 .drop(3) // drop name, weight and '->'
                 .fold(programs, { map, rawChildName ->
                     val childName = if (rawChildName.endsWith(",")) rawChildName.dropLast(1) else rawChildName
-                    val childProgram = Program(childName, map[childName]?.weight, parentProgram)
-                    val children = parentProgram.children.plus(childProgram)
-                    
-                    map.plus(Pair(parentProgram.name, parentProgram.copy(children = children)))
-                            .plus(Pair(childName, childProgram))
+                    val childProgram = Program(childName, map[childName]?.weight, parentName, map[childName]?.children ?: listOf())
+                    val parentProgram = map[parentName]!!
+                    val children = parentProgram.children.plus(childName)
+
+                    map.plus(Pair(childName, childProgram)).plus(Pair(parentName, parentProgram.copy(children = children)))
                 })
+    }
+
+    private fun fillChildrenWeights(programName: String, programs: Map<String, Program>): Map<String, Program> {
+        val program = programs[programName]!!
+        if (program.children.isEmpty()) {
+            return programs
+        }
+
+        return program.children.fold(programs, { map, childName ->
+            val newMap = fillChildrenWeights(childName, map)
+            val childProgram = newMap[childName]!!
+            val parentProgram = newMap[programName]!!
+            newMap.plus(Pair(programName,
+                    parentProgram.copy(childrenWeight = parentProgram.childrenWeight + (childProgram.weight ?: 0) + childProgram.childrenWeight)))
+        })
+    }
+
+    private fun findCorrectWeights(acc: List<Int>, parentProgram: Program, programs: Map<String, Program>): List<Int> {
+        if (parentProgram.children.isEmpty()) return acc
+
+        val childrenWeights = parentProgram.children.map({ childName ->
+            val childProgram = programs[childName]!!
+            Pair(childProgram, (childProgram.weight ?: 0) + childProgram.childrenWeight)
+        })
+
+        val firstWeight = childrenWeights.first().second
+        val newAcc = acc.plus(childrenWeights.filter { w -> w.second != firstWeight } // main check
+                .map { w -> w.first.weight!! - (w.second - firstWeight) })
+
+        return parentProgram.children.fold(newAcc, { weights, child -> findCorrectWeights(weights, programs[child]!!, programs) })
     }
 
 }
 
 data class Program(val name: String,
                    val weight: Int?,
-                   val parent: Program?,
-                   val children: List<Program> = listOf())
+                   val parent: String = "",
+                   val children: List<String> = listOf(),
+                   var childrenWeight: Int = 0)
 
 private val inputFileName = "day7.txt"
 
 fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
+
     println("Bottom program: " + Day7RecursiveCircus.findBottomProgram(input))
+    println("Needed weight: " + Day7RecursiveCircus.findNeededWeight(input))
 }
