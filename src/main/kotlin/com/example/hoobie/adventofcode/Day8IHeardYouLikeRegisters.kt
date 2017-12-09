@@ -28,12 +28,19 @@ You might also encounter <= (less than or equal to) or != (not equal to). Howeve
 to tell you what all the registers are named, and leaves that to you to determine.
 
 What is the largest value in any register after completing the instructions in your puzzle input?
+
+--- Part Two ---
+
+To be safe, the CPU also needs to know the highest value held in any register during this process
+so that it can decide how much memory to allocate to these operations. For example, in the above instructions,
+the highest value ever held was 10 (in register c after the third instruction was evaluated).
+
  */
 
 object Day8IHeardYouLikeRegisters {
 
-    fun findTheLargestValue(input: String): Int {
-        val registers = input.split("\n").map {
+    fun findTheLargestValues(input: String): Pair<Int, Int> {
+        val registersAndMaxValue = input.split("\n").map {
             val tokens = it.split(" ")
             Instruction(Operation(
                     tokens[0],
@@ -56,11 +63,13 @@ object Day8IHeardYouLikeRegisters {
                     },
                     tokens[6].toInt()
             ))
-        }.fold(hashMapOf(), { acc: Map<String, Int>, ins ->
-            ins.eval(acc)
+        }.fold(Pair(hashMapOf(), 0), { acc: Pair<Map<String, Int>, Int>, ins ->
+            val newRegister = ins.eval(acc.first)
+            val maxValue = newRegister.values.max()!!
+            Pair(newRegister, if (maxValue > acc.second) maxValue else acc.second )
         })
         
-        return registers.values.max()!!
+        return Pair(registersAndMaxValue.first.values.max()!!, registersAndMaxValue.second)
     }
 
 }
@@ -157,5 +166,5 @@ private val inputFileName = "day8.txt"
 fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
-    println("Largest value: " + Day8IHeardYouLikeRegisters.findTheLargestValue(input))
+    println("Largest values: " + Day8IHeardYouLikeRegisters.findTheLargestValues(input))
 }
