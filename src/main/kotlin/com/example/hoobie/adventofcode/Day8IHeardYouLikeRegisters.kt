@@ -56,7 +56,7 @@ object Day8IHeardYouLikeRegisters {
                     },
                     tokens[6].toInt()
             ))
-        }
+        }.fold(hashMapOf(), { acc: Map<String, Int>, ins -> ins.eval(acc) })
 
         return 0
     }
@@ -65,9 +65,16 @@ object Day8IHeardYouLikeRegisters {
 
 data class Instruction(private val operation: Operation, private val condition: Condition) {
     fun eval(registers: Map<String, Int>): Map<String, Int> {
-        if (!registers.contains(operation.register)) registers.plus(Pair(operation.register, 0))
-        return if (condition.eval(registers))
-            registers.plus(Pair(operation.register, operation.eval(registers))) else registers
+        val newRegisters = initializeRegister(registers)
+        return if (condition.eval(newRegisters))
+            newRegisters.plus(Pair(operation.register, operation.eval(newRegisters))) else newRegisters
+    }
+
+    private fun initializeRegister(registers: Map<String, Int>): Map<String, Int> {
+        val new = if (!registers.contains(operation.register))
+            registers.plus(Pair(operation.register, 0)) else registers
+        return if (!new.contains(condition.register))
+            new.plus(Pair(condition.register, 0)) else new
     }
 }
 
