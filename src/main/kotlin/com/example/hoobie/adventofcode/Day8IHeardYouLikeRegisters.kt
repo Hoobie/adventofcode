@@ -56,7 +56,9 @@ object Day8IHeardYouLikeRegisters {
                     },
                     tokens[6].toInt()
             ))
-        }.fold(hashMapOf(), { acc: Map<String, Int>, ins -> ins.eval(acc) })
+        }.fold(hashMapOf(), { acc: Map<String, Int>, ins ->
+            ins.eval(acc)
+        })
         
         return registers.values.max()!!
     }
@@ -108,7 +110,7 @@ data class Condition(val register: String, private val comparison: ComparisonTyp
             Gt -> registers[register]!! > value
             Gte -> registers[register]!! >= value
             Lt -> registers[register]!! < value
-            Lte -> registers[register]!! >= value
+            Lte -> registers[register]!! <= value
         }
     }
 }
