@@ -58,17 +58,35 @@ which is one more than the score of the group that immediately contains it. (The
     {{<a!>},{<a!>},{<a!>},{<ab>}}, score of 1 + 2 = 3.
 
 What is the total score for all groups in your input?
+
+--- Part Two ---
+
+Now, you're ready to remove the garbage.
+
+To prove you've removed it, you need to count all of the characters within the garbage.
+The leading and trailing < and > don't count, nor do any canceled characters or the ! doing the canceling.
+
+    <>, 0 characters.
+    <random characters>, 17 characters.
+    <<<<>, 3 characters.
+    <{!>}>, 2 characters.
+    <!!>, 0 characters.
+    <!!!>>, 0 characters.
+    <{o"i!a,<{i<a>, 10 characters.
+
+How many non-canceled characters are within the garbage in your puzzle input?
  */
 
 object Day9StreamProcessing {
 
     private val marker = Object()
 
-    fun calculateTheScore(input: String): Int {
+    fun calculateScores(input: String): Pair<Int, Int> {
         val groupsStack: Stack<Any> = Stack()
         var garbage = false
         var skip = false
         var score = 0
+        var garbageCount = 0
 
         input.toCharArray().forEach {
             if (!skip) {
@@ -77,15 +95,16 @@ object Day9StreamProcessing {
                     '{' -> if (!garbage) {
                         groupsStack.push(marker)
                         score += groupsStack.size
-                    }
-                    '}' -> if (!garbage) groupsStack.pop()
-                    '<' -> if (!garbage) garbage = true
+                    } else garbageCount++
+                    '}' -> if (!garbage) groupsStack.pop() else garbageCount++
+                    '<' -> if (!garbage) garbage = true else garbageCount++
                     '>' -> garbage = false
+                    else -> if (garbage) garbageCount++
                 }
             } else skip = false
         }
 
-        return score
+        return Pair(score, garbageCount)
     }
 
 }
@@ -95,5 +114,5 @@ private val inputFileName = "day9.txt"
 fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
-    println("Largest values: " + Day9StreamProcessing.calculateTheScore(input))
+    println("Scores: " + Day9StreamProcessing.calculateScores(input))
 }
