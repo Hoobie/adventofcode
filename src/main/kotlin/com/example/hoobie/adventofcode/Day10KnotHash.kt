@@ -73,15 +73,15 @@ object Day10KnotHash {
         return list[0] * list[1]
     }
 
-    private fun hash(list: IntCircularList, lenght: Int, current: Int, skip: Int): Int {
+    private fun hash(list: IntCircularList, length: Int, current: Int, skip: Int): Int {
         var begin = current
-        var end = current + lenght - 1
+        var end = current + length - 1
         while (begin < end) {
             list.swap(begin, end)
             begin++
             end--
         }
-        return current + lenght + skip
+        return current + length + skip
     }
 
 }
