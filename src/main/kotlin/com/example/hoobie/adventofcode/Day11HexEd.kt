@@ -52,8 +52,8 @@ object Day11HexEd {
 
                     val vector = normalizePath(path)
 
-                    if (abs(vector[0]) + abs(vector[1]) + abs(vector[2]) > acc.second)
-                        Pair(vector, abs(vector[0]) + abs(vector[1]) + abs(vector[2])) else Pair(vector, acc.second)
+                    val minSteps = abs(vector[0]) + abs(vector[1]) + abs(vector[2])
+                    if (minSteps > acc.second) Pair(vector, minSteps) else Pair(vector, acc.second)
                 })
 
         return Pair(abs(results.first[0]) + abs(results.first[1]) + abs(results.first[2]), results.second)
