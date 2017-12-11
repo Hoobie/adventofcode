@@ -48,12 +48,12 @@ object Day11HexEd {
     fun computeSteps(input: String): Pair<Int, Int> {
         val results = input.split(",")
                 .fold(Pair(listOf(0, 0, 0), 0), { acc, step ->
-                    val vector = move(acc.first, step)
+                    val path = move(acc.first, step)
 
-                    val path = normalizePath(vector)
+                    val vector = normalizePath(path)
 
-                    if (abs(path[0]) + abs(path[1]) + abs(path[2]) > acc.second)
-                        Pair(path, abs(path[0]) + abs(path[1]) + abs(path[2])) else Pair(path, acc.second)
+                    if (abs(vector[0]) + abs(vector[1]) + abs(vector[2]) > acc.second)
+                        Pair(vector, abs(vector[0]) + abs(vector[1]) + abs(vector[2])) else Pair(vector, acc.second)
                 })
 
         return Pair(abs(results.first[0]) + abs(results.first[1]) + abs(results.first[2]), results.second)
