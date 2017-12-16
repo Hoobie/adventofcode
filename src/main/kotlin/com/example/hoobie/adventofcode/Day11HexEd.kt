@@ -1,6 +1,7 @@
 package com.example.hoobie.adventofcode
 
 import com.example.hoobie.adventofcode.utils.FileUtil
+import com.example.hoobie.adventofcode.utils.patch
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -120,9 +121,7 @@ object Day11HexEd {
                 .patch(1, eq5[1] + sw)
                 .patch(2, eq5[2] - sw)
     }
-
-    private fun List<Int>.patch(idx: Int, value: Int): List<Int> = this.mapIndexed({ i, v -> if (i == idx) value else v })
-
+    
 }
 
 private val inputFileName = "day11.txt"

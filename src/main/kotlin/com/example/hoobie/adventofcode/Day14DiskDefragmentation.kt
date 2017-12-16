@@ -1,5 +1,7 @@
 package com.example.hoobie.adventofcode
 
+import com.example.hoobie.adventofcode.utils.patch
+
 /*
 --- Day 14: Disk Defragmentation ---
 Suddenly, a scheduled job activates the system's disk defragmenter. Were the situation different, 
@@ -67,6 +69,20 @@ How many regions are present given your key string?
 object Day14DiskDefragmentation {
 
     fun countUsedSquares(input: String): Int {
+        return createDisk(input)
+                .flatMap { it.toCharArray().toList() }
+                .filter { it == '#' }.count()
+    }
+
+    fun countRegions(input: String): Int {
+        val disk = createDisk(input).map { it.toCharArray().toList() }
+
+//        disk.forEach { println(it.joinToString("")) }
+
+        return countRegionsTailRec(0, 0, 0, disk).first
+    }
+
+    private fun createDisk(input: String): List<String> {
         return (0..127)
                 .map { input + "-" + it }
                 .map { Day10KnotHash.knotHash(it) }
@@ -80,8 +96,37 @@ object Day14DiskDefragmentation {
                                 .joinToString("")
                     }
                 }
-                .flatMap { it.toCharArray().toList() }
-                .filter { it == '#' }.count()
+    }
+
+    private tailrec fun countRegionsTailRec(regions: Int, x: Int, y: Int, disk: List<List<Char>>): Pair<Int, List<List<Char>>> {
+        if (x >= 128 && y >= 127) return Pair(regions, disk)
+        if (x >= 128) return countRegionsTailRec(regions, 0, y + 1, disk)
+        return if (disk[x][y] == '#') {
+            val newRegions = regions + 1
+            val newDisk = disk.patch(x, y, 'O')
+            val newDisk2 = explore(x - 1, y, newDisk)
+            val newDisk3 = explore(x + 1, y, newDisk2)
+            val newDisk4 = explore(x, y - 1, newDisk3)
+            val newDisk5 = explore(x, y + 1, newDisk4)
+            countRegionsTailRec(newRegions, x + 1, y, newDisk5)
+        } else {
+            countRegionsTailRec(regions, x + 1, y, disk)
+        }
+    }
+
+    private fun explore(x: Int, y: Int, disk: List<List<Char>>): List<List<Char>> {
+        if (x < 0 || x >= 128 || y < 0 || y >= 128) return disk
+        return if (disk[x][y] == '#') {
+            val newDisk = disk.patch(x, y, 'O')
+            val newDisk2 = explore(x - 1, y, newDisk)
+            val newDisk3 = explore(x + 1, y, newDisk2)
+            val newDisk4 = explore(x, y - 1, newDisk3)
+            explore(x, y + 1, newDisk4)
+        } else disk
+    }
+
+    private fun <T> List<List<T>>.patch(x: Int, y: Int, value: T): List<List<T>> {
+        return this.patch(x, this[x].patch(y, value))
     }
 }
 
@@ -89,4 +134,5 @@ private val input = "vbqugkhl"
 
 fun main(args: Array<String>) {
     println("Used squares: " + Day14DiskDefragmentation.countUsedSquares(input))
+    println("Regions: " + Day14DiskDefragmentation.countRegions(input))
 }
