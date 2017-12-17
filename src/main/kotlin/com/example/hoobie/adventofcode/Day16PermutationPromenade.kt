@@ -54,8 +54,7 @@ object Day16PermutationPromenade {
         val moves = transformMoves(input)
         val cycle = findCycle(1, moves, programsConverted, programsConverted)
         val loop = 1000000000 % cycle
-        return (1..loop).fold(programsConverted, { acc: List<Char>, i ->
-            if (i % 1000 == 0) println((i / loop.toDouble() * 100.0).toString() + "%")
+        return (1..loop).fold(programsConverted, { acc: List<Char>, _ ->
             getOrderFast(moves, acc)
         }).joinToString("")
     }
@@ -79,13 +78,13 @@ object Day16PermutationPromenade {
         if (order == firstOrder) return acc
         return findCycle(acc + 1, moves, order, firstOrder)
     }
-    
+
     private fun getOrderFast(moves: List<DanceMove>, programs: List<Char>): List<Char> {
         return moves.fold(programs, { acc, danceMove ->
             danceMove.make(acc)
         })
     }
-    
+
     private abstract class DanceMove {
         abstract fun make(programs: List<Char>): List<Char>
     }
