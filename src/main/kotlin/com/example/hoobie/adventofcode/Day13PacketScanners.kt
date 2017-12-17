@@ -337,7 +337,7 @@ object Day13PacketScanners {
                                         scannersRanges: Map<Int, Int>, delay: Int): Int {
         if (layer > maxLayer) return delay
         if (scannersPositions[layer]?.first == 1) {
-            val scannersInitials = (0..delay).fold(resetPositions(scannersPositions), { acc, _ ->
+            val scannersInitials = (1..delay + 1).fold(resetPositions(scannersPositions), { acc, _ ->
                 moveScanners(acc, scannersRanges)
             })
             return getDelayTailRec(0, maxLayer, scannersInitials, scannersRanges, delay + 1)
