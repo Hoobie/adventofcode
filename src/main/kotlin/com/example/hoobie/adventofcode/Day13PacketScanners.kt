@@ -309,7 +309,7 @@ object Day13PacketScanners {
     fun getDelay(input: String): Int {
         val (scannersRanges, scannersInitials) = initScanners(input)
 
-        return getDelayTailRec(0, scannersRanges.keys.max()!!, scannersInitials, scannersRanges, 0)
+        return getDelayTailRec(0, scannersRanges.keys.max()!!, scannersInitials, scannersInitials, scannersRanges, 0)
     }
 
     private fun initScanners(input: String): Pair<Map<Int, Int>, Map<Int, Pair<Int, Int>>> {
@@ -334,18 +334,17 @@ object Day13PacketScanners {
     }
 
     private tailrec fun getDelayTailRec(layer: Int, maxLayer: Int, scannersPositions: Map<Int, Pair<Int, Int>>,
-                                        scannersRanges: Map<Int, Int>, delay: Int): Int {
+                                        positionsCache: Map<Int, Pair<Int, Int>>, scannersRanges: Map<Int, Int>, delay: Int): Int {
         if (layer > maxLayer) return delay
+        
         if (scannersPositions[layer]?.first == 1) {
-            val scannersInitials = (1..delay + 1).fold(resetPositions(scannersPositions), { acc, _ ->
-                moveScanners(acc, scannersRanges)
-            })
-            return getDelayTailRec(0, maxLayer, scannersInitials, scannersRanges, delay + 1)
+            val scannersInitials = moveScanners(positionsCache, scannersRanges)
+            return getDelayTailRec(0, maxLayer, scannersInitials, scannersInitials, scannersRanges, delay + 1)
         }
 
         val newScannersPositions = moveScanners(scannersPositions, scannersRanges)
 
-        return getDelayTailRec(layer + 1, maxLayer, newScannersPositions, scannersRanges, delay)
+        return getDelayTailRec(layer + 1, maxLayer, newScannersPositions, positionsCache, scannersRanges, delay)
     }
 
     private fun resetPositions(scannersPositions: Map<Int, Any>) = scannersPositions.mapValues { Pair(1, 1) }
