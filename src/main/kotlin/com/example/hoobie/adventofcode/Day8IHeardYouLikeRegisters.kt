@@ -74,7 +74,7 @@ object Day8IHeardYouLikeRegisters {
 
 }
 
-data class Instruction(private val operation: Operation, private val condition: Condition) {
+private data class Instruction(private val operation: Operation, private val condition: Condition) {
     fun eval(registers: Map<String, Int>): Map<String, Int> {
         val newRegisters = initializeRegister(registers)
         return if (condition.eval(newRegisters))
@@ -89,7 +89,7 @@ data class Instruction(private val operation: Operation, private val condition: 
     }
 }
 
-data class Operation(val register: String, private val operation: OperationType, private val value: Int) {
+private data class Operation(val register: String, private val operation: OperationType, private val value: Int) {
     fun eval(registers: Map<String, Int>): Int {
         return when (operation) {
             Inc -> registers[register]!! + value
@@ -98,20 +98,20 @@ data class Operation(val register: String, private val operation: OperationType,
     }
 }
 
-sealed class OperationType
-object Inc : OperationType() {
+private sealed class OperationType
+private object Inc : OperationType() {
     override fun toString(): String {
         return "inc"
     }
 }
 
-object Dec : OperationType() {
+private object Dec : OperationType() {
     override fun toString(): String {
         return "dec"
     }
 }
 
-data class Condition(val register: String, private val comparison: ComparisonType, private val value: Int) {
+private data class Condition(val register: String, private val comparison: ComparisonType, private val value: Int) {
     fun eval(registers: Map<String, Int>): Boolean {
         return when (comparison) {
             Eq -> registers[register] == value
@@ -124,38 +124,38 @@ data class Condition(val register: String, private val comparison: ComparisonTyp
     }
 }
 
-sealed class ComparisonType
-object Eq : ComparisonType() {
+private sealed class ComparisonType
+private object Eq : ComparisonType() {
     override fun toString(): String {
         return "=="
     }
 }
 
-object Ne : ComparisonType() {
+private object Ne : ComparisonType() {
     override fun toString(): String {
         return "!="
     }
 }
 
-object Gt : ComparisonType() {
+private object Gt : ComparisonType() {
     override fun toString(): String {
         return ">"
     }
 }
 
-object Gte : ComparisonType() {
+private object Gte : ComparisonType() {
     override fun toString(): String {
         return ">="
     }
 }
 
-object Lt : ComparisonType() {
+private object Lt : ComparisonType() {
     override fun toString(): String {
         return "<"
     }
 }
 
-object Lte : ComparisonType() {
+private object Lte : ComparisonType() {
     override fun toString(): String {
         return "<="
     }
