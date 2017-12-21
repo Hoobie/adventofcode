@@ -82,10 +82,47 @@ How many pixels stay on after 5 iterations?
  */
 object Day21FractalArt {
 
-    
+    private val startPattern = ".#./..#/###"
+
     fun countTurnedOnPixels(input: String): Int {
-       
+        val rules = readRules(input)
+        divide(startPattern)
         return 0
+    }
+
+    private fun readRules(input: String): Map<String, String> {
+        return input.split("\n")
+                .map {
+                    val tokens = it.split(" => ")
+                    Pair(tokens[0], tokens[1])
+                }.toMap()
+    }
+
+    private fun divide(pattern: String): List<List<String>> {
+        val lines = pattern.split("/")
+        val size = lines[0].length
+        if (size % 2 == 0 && size > 2) {
+            return divide(lines, size, 2)
+        } else if (size % 3 == 0 && size > 3) {
+            return divide(lines, size, 3)
+        }
+        throw IllegalArgumentException("divide")
+    }
+
+    private fun divide(lines: List<String>, size: Int, divider: Int): List<List<String>> {
+        return lines
+                .map { it.chunked(size / divider) }.chunked(size / divider)
+                .map { groupByIndex(it) }
+                .map { it.values }
+                .map { it.map { it.joinToString("/") } }
+    }
+
+    private fun groupByIndex(it: List<List<String>>): Map<Int, List<String>> {
+        return it.fold(linkedMapOf(), { acc: Map<Int, List<String>>, list ->
+            val pairs = list.mapIndexed { i, elem -> Pair(i, listOf(elem)) }
+            val newPairs = pairs.map { Pair(it.first, acc[it.first]?.plus(it.second) ?: it.second) }
+            acc + newPairs
+        })
     }
 
 }
