@@ -76,10 +76,10 @@ On the next tick, particle 3 passes through unharmed.
 
 How many particles are left after all collisions are resolved?
  */
-
 object Day20ParticleSwarm {
 
     private val particleRegex = Regex("p=<(?<pX>-?\\d+),(?<pY>-?\\d+),(?<pZ>-?\\d+)>, v=<(?<vX>-?\\d+),(?<vY>-?\\d+),(?<vZ>-?\\d+)>, a=<(?<aX>-?\\d+),(?<aY>-?\\d+),(?<aZ>-?\\d+)>")
+    private val maxIter = 40
 
     fun getParticleClosestToZero(input: String): Int {
         val particle = parseParticles(input)
@@ -88,6 +88,16 @@ object Day20ParticleSwarm {
         return particle.first
     }
 
+    fun countParticlesLeft(input: String): Int {
+        val particles = parseParticles(input)
+
+        val newParticles = collide(0, particles)
+
+        return (0..maxIter).fold(newParticles, { acc, _ ->
+            collide(0, acc.map { it.move() })
+        }).size
+    }
+    
     private fun parseParticles(input: String): List<Particle> {
         return input.split("\n")
                 .map {
@@ -98,12 +108,31 @@ object Day20ParticleSwarm {
                 }
     }
 
+    private tailrec fun collide(particleIdx: Int, particles: List<Particle>): List<Particle> {
+        if (particleIdx >= particles.size) return particles
+
+        val particle = particles[particleIdx]
+        val movedParticles = particles.filterIndexed { i, _ -> i != particleIdx }
+
+        val newParticles = movedParticles.filter { it.position != particle.position }
+        val result = if (newParticles.size == movedParticles.size) listOf(particle) + newParticles else newParticles
+
+        return collide(particleIdx + 1, result)
+    }
+
     private fun MatchNamedGroupCollection.unpackLong(name: String) = this[name]!!.value.toLong()
 
-    private data class Particle(val position: Vector3D, val velocity: Vector3D, val acceleration: Vector3D)
+    private data class Particle(val position: Vector3D, val velocity: Vector3D, val acceleration: Vector3D) {
+        fun move(): Particle {
+            val newVelocity = this.velocity + this.acceleration
+            return this.copy(velocity = newVelocity, position = this.position + newVelocity)
+        }
+    }
 
     private data class Vector3D(val x: Long, val y: Long, val z: Long) {
-        fun absSum(): Long = abs(this.x) + abs(this.y) + abs(this.z)
+        fun absSum() = abs(this.x) + abs(this.y) + abs(this.z)
+
+        operator fun plus(other: Vector3D) = Vector3D(this.x + other.x, this.y + other.y, this.z + other.z)
     }
 
 }
@@ -114,4 +143,6 @@ fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
     println("Particle: " + Day20ParticleSwarm.getParticleClosestToZero(input))
+    println("Particles left: " + Day20ParticleSwarm.countParticlesLeft(input))
+
 }
