@@ -109,23 +109,23 @@ object Day22SporificaVirus {
                 .map { it.toCharArray().toList() }
 
         val middle = grid.size / 2
-        
+
         return work(middle, middle, Pair(0, -1), grid, bursts, 0L)
     }
 
     private tailrec fun work(x: Int, y: Int, direction: Pair<Int, Int>, grid: List<List<Char>>, bursts: Int, infections: Long): Long {
         if (bursts <= 0) return infections
-
+        
         val enlargedGrid = if (x < 0 || x >= grid.size || y < 0 || y >= grid.size) enlargeGrid(grid) else grid
         val newX = if (enlargedGrid.size != grid.size) x + grid.size else x
         val newY = if (enlargedGrid.size != grid.size) y + grid.size else y
-        
+
         val node = enlargedGrid[newY][newX]
 
         val newDirection = turn(node, direction)
-        val newGrid = enlargedGrid.patch(newX, newY, if (node == '.') '#' else '.')
-        val newInfections = if (node == '.') infections + 1 else infections
-        
+        val newGrid = enlargedGrid.patch(newX, newY, getState(node))
+        val newInfections = if (node == 'w') infections + 1 else infections
+
         return work(newX + newDirection.first, newY + newDirection.second, newDirection, newGrid, bursts - 1, newInfections)
     }
 
@@ -144,22 +144,33 @@ object Day22SporificaVirus {
     private fun getListOfDots(size: Int) = ("." * size).toCharArray().toList()
 
     private fun turn(node: Char, direction: Pair<Int, Int>): Pair<Int, Int> {
-        if (node == '#') {
-            return when (direction) {
+        when (node) {
+            '#' -> return when (direction) {
                 Pair(0, -1) -> Pair(1, 0)
                 Pair(1, 0) -> Pair(0, 1)
                 Pair(0, 1) -> Pair(-1, 0)
                 Pair(-1, 0) -> Pair(0, -1)
                 else -> throw IllegalArgumentException("turn")
             }
-        } else {
-            return when (direction) {
+            '.' -> return when (direction) {
                 Pair(0, -1) -> Pair(-1, 0)
                 Pair(-1, 0) -> Pair(0, 1)
                 Pair(0, 1) -> Pair(1, 0)
                 Pair(1, 0) -> Pair(0, -1)
                 else -> throw IllegalArgumentException("turn")
             }
+            'f' -> return Pair(-direction.first, -direction.second)
+            else -> return direction
+        }
+    }
+
+    private fun getState(current: Char): Char {
+        return when (current) {
+            '.' -> 'w'
+            'w' -> '#'
+            '#' -> 'f'
+            'f' -> '.'
+            else -> throw IllegalArgumentException("getState")
         }
     }
 
@@ -172,5 +183,5 @@ private val inputFileName = "day22.txt"
 fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
-    println("Infections: " + Day22SporificaVirus.countInfections(input, 10000))
+    println("Infections: " + Day22SporificaVirus.countInfections(input, 10000000))
 }
