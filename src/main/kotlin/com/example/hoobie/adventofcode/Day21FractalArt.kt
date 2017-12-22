@@ -79,15 +79,19 @@ Finally, the squares are joined into a new grid:
 Thus, after 2 iterations, the grid contains 12 pixels that are on.
 
 How many pixels stay on after 5 iterations?
+
+--- Part Two ---
+How many pixels stay on after 18 iterations?
+
  */
 object Day21FractalArt {
 
     private val startPattern = ".#./..#/###"
 
-    fun countTurnedOnPixels(input: String): Int {
+    fun countTurnedOnPixels(input: String, iterations: Int): Int {
         val rules = readRules(input)
         
-        val pattern = (0 until 5).fold(startPattern, { acc, _ ->
+        val pattern = (0 until iterations).fold(startPattern, { acc, _ ->
             val divided = divide(acc)
             
             val transformed = divided.map {
@@ -182,5 +186,6 @@ private val inputFileName = "day21.txt"
 fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
-    println("Turned on pixels: " + Day21FractalArt.countTurnedOnPixels(input))
+    println("Turned on pixels after 5 iterations: " + Day21FractalArt.countTurnedOnPixels(input, 5))
+    println("Turned on pixels after 18 iterations: " + Day21FractalArt.countTurnedOnPixels(input, 18))
 }
