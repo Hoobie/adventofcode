@@ -14,4 +14,44 @@ class Day21FractalArtSpec extends Specification {
         "#...../.#..../..#.../...#../....#./.....#" || [["#../.#./..#", ".../.../..."], [".../.../...", "#../.#./..#"]]
     }
 
+    def "should flip horizontally"() {
+        expect:
+        new Day21FractalArt().flipHorizontally(input) == result
+
+        where:
+        input         || result
+        "#../##./#.." || "..#/.##/..#"
+    }
+
+    def "should flip vertically"() {
+        expect:
+        new Day21FractalArt().flipVertically(input) == result
+
+        where:
+        input         || result
+        "###/.#./..." || ".../.#./###"
+    }
+
+    def "should rotate"() {
+        expect:
+        new Day21FractalArt().rotate(input) == result
+
+        where:
+        input         || result
+        
+        "###/.../..." || "#../#../#.."
+        
+        ".#./..#/###" || ".##/#.#/..#"
+        ".##/#.#/..#" || "###/#../.#."
+        "###/#../.#." || "#../#.#/##."
+    }
+
+    def "should merge"() {
+        expect:
+        new Day21FractalArt().merge(input) == result
+
+        where:
+        input                                    || result
+        [["#./..", ".#/.."], ["../#.", "../.#"]] || "#..#/..../..../#..#"
+    }
 }

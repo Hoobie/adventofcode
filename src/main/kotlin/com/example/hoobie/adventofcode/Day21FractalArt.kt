@@ -86,8 +86,21 @@ object Day21FractalArt {
 
     fun countTurnedOnPixels(input: String): Int {
         val rules = readRules(input)
-        divide(startPattern)
-        return 0
+        
+        val pattern = (0 until 5).fold(startPattern, { acc, _ ->
+            val divided = divide(acc)
+            
+            val transformed = divided.map {
+                it.map { transform(it, rules) }
+            }
+            
+            merge(transformed)
+        })
+        
+        return pattern.toCharArray().fold(0, { acc, c ->
+            if (c == '#') acc + 1
+            else acc
+        })
     }
 
     private fun readRules(input: String): Map<String, String> {
@@ -101,28 +114,65 @@ object Day21FractalArt {
     private fun divide(pattern: String): List<List<String>> {
         val lines = pattern.split("/")
         val size = lines[0].length
-        if (size % 2 == 0 && size > 2) {
-            return divide(lines, size, 2)
-        } else if (size % 3 == 0 && size > 3) {
-            return divide(lines, size, 3)
-        }
-        throw IllegalArgumentException("divide")
+
+        if (size == 2 || size == 3) return listOf(listOf(pattern))
+
+        return if (size % 2 == 0 && size > 2)
+            divide(lines, 2)
+        else if (size % 3 == 0 && size > 3)
+            divide(lines, 3)
+        else throw IllegalArgumentException("divide")
     }
 
-    private fun divide(lines: List<String>, size: Int, divider: Int): List<List<String>> {
+    private fun divide(lines: List<String>, divider: Int): List<List<String>> {
         return lines
-                .map { it.chunked(size / divider) }.chunked(size / divider)
+                .map { it.chunked(divider) }.chunked(divider)
                 .map { groupByIndex(it) }
-                .map { it.values }
                 .map { it.map { it.joinToString("/") } }
     }
 
-    private fun groupByIndex(it: List<List<String>>): Map<Int, List<String>> {
+    private fun merge(dividedPattern: List<List<String>>): String {
+        return dividedPattern.map { it.map { it.split("/") } }
+                .map { groupByIndex(it) }
+                .joinToString("/") {
+                    it.joinToString("/") {
+                        it.joinToString("")
+                    }
+                }
+    }
+
+    private fun groupByIndex(it: List<List<String>>): List<List<String>> {
         return it.fold(linkedMapOf(), { acc: Map<Int, List<String>>, list ->
             val pairs = list.mapIndexed { i, elem -> Pair(i, listOf(elem)) }
             val newPairs = pairs.map { Pair(it.first, acc[it.first]?.plus(it.second) ?: it.second) }
             acc + newPairs
-        })
+        }).values.toList()
+    }
+
+    private tailrec fun transform(pattern: String, rules: Map<String, String>, rotateCounter: Int = 0): String {
+        if (rotateCounter > 3) throw IllegalArgumentException("transform")
+
+        if (pattern in rules) return rules[pattern]!!
+
+        val horizontalFlip = flipHorizontally(pattern)
+        if (horizontalFlip in rules) return rules[horizontalFlip]!!
+        if (flipVertically(pattern) in rules) return rules[flipVertically(pattern)]!!
+        if (flipVertically(horizontalFlip) in rules) return rules[flipVertically(horizontalFlip)]!!
+
+        return transform(rotate(pattern), rules, rotateCounter + 1)
+    }
+
+    private fun rotate(pattern: String) = flipVertically(transpose(pattern))
+    private fun flipHorizontally(pattern: String) = pattern.split("/").joinToString("/") { it.reversed() }
+    private fun flipVertically(pattern: String) = pattern.split("/").asReversed().joinToString("/")
+    private fun transpose(pattern: String): String {
+        val size = pattern.split("/")[0].length
+
+        return pattern.replace("/", "").toCharArray()
+                .foldIndexed(hashMapOf(), { i, acc: Map<Int, List<Char>>, c ->
+                    acc + Pair(i % size, acc[i % size]?.plus(c) ?: listOf(c))
+                })
+                .values.joinToString("/") { it.joinToString("") }
     }
 
 }
@@ -133,5 +183,4 @@ fun main(args: Array<String>) {
     val input = FileUtil.readFile(inputFileName)
 
     println("Turned on pixels: " + Day21FractalArt.countTurnedOnPixels(input))
-
 }
