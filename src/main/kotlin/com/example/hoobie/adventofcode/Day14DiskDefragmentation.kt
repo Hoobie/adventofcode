@@ -101,7 +101,7 @@ object Day14DiskDefragmentation {
     private tailrec fun countRegionsTailRec(regions: Int, x: Int, y: Int, disk: List<List<Char>>): Pair<Int, List<List<Char>>> {
         if (x >= 128 && y >= 127) return Pair(regions, disk)
         if (x >= 128) return countRegionsTailRec(regions, 0, y + 1, disk)
-        return if (disk[x][y] == '#') {
+        return if (disk[y][x] == '#') {
             val newRegions = regions + 1
             val newDisk = disk.patch(x, y, 'O')
             val newDisk2 = explore(x - 1, y, newDisk)
@@ -116,17 +116,13 @@ object Day14DiskDefragmentation {
 
     private fun explore(x: Int, y: Int, disk: List<List<Char>>): List<List<Char>> {
         if (x < 0 || x >= 128 || y < 0 || y >= 128) return disk
-        return if (disk[x][y] == '#') {
+        return if (disk[y][x] == '#') {
             val newDisk = disk.patch(x, y, 'O')
             val newDisk2 = explore(x - 1, y, newDisk)
             val newDisk3 = explore(x + 1, y, newDisk2)
             val newDisk4 = explore(x, y - 1, newDisk3)
             explore(x, y + 1, newDisk4)
         } else disk
-    }
-
-    private fun <T> List<List<T>>.patch(x: Int, y: Int, value: T): List<List<T>> {
-        return this.patch(x, this[x].patch(y, value))
     }
 }
 
