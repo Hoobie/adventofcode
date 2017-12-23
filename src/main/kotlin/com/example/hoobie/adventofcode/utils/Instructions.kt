@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode.day18
+package com.example.hoobie.adventofcode.utils
 
 abstract class Instruction(open val destReg: String) {
     abstract fun eval(registers: Map<String, Long>): Map<String, Long>
@@ -31,6 +31,18 @@ data class AddRegister(override val destReg: String, val srcReg: String) : Instr
 data class Add(val register: String, val value: Int) : Instruction(register) {
     override fun eval(registers: Map<String, Long>): Map<String, Long> {
         return registers.plus(Pair(register, registers[register]!! + value))
+    }
+}
+
+data class SubRegister(override val destReg: String, val srcReg: String) : Instruction(destReg) {
+    override fun eval(registers: Map<String, Long>): Map<String, Long> {
+        return registers.plus(Pair(destReg, registers[destReg]!! - registers[srcReg]!!))
+    }
+}
+
+data class Sub(val register: String, val value: Int) : Instruction(register) {
+    override fun eval(registers: Map<String, Long>): Map<String, Long> {
+        return registers.plus(Pair(register, registers[register]!! - value))
     }
 }
 
@@ -79,6 +91,24 @@ data class Jrgz(val register: String, val value: Long) : Instruction(register) {
 data class Jrgzr(val register: String, val srcReg: String) : Instruction(register) {
     override fun eval(registers: Map<String, Long>): Map<String, Long> {
         return if (registers[register]!! > 0) registers.plus(Pair("jmp", registers[srcReg]!!)) else registers
+    }
+}
+
+data class Jnz(val val1: Long, val val2: Long) : Instruction("jmp") {
+    override fun eval(registers: Map<String, Long>): Map<String, Long> {
+        return if (val1 > 0) registers.plus(Pair("jmp", val2)) else registers
+    }
+}
+
+data class Jrnz(val register: String, val value: Long) : Instruction(register) {
+    override fun eval(registers: Map<String, Long>): Map<String, Long> {
+        return if (registers[register]!! != 0L) registers.plus(Pair("jmp", value)) else registers
+    }
+}
+
+data class Jrnzr(val register: String, val srcReg: String) : Instruction(register) {
+    override fun eval(registers: Map<String, Long>): Map<String, Long> {
+        return if (registers[register]!! != 0L) registers.plus(Pair("jmp", registers[srcReg]!!)) else registers
     }
 }
 

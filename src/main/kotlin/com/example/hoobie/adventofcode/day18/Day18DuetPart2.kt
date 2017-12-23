@@ -1,6 +1,7 @@
 package com.example.hoobie.adventofcode.day18
 
-import com.example.hoobie.adventofcode.utils.FileUtil
+import com.example.hoobie.adventofcode.utils.*
+import com.example.hoobie.adventofcode.utils.Set
 
 /*
 --- Part Two ---
