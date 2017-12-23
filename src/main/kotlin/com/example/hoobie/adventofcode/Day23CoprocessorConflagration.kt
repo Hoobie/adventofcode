@@ -82,8 +82,8 @@ object Day23CoprocessorConflagration {
     }
 
     private tailrec fun run(registers: Map<String, Long>, instructions: List<Instruction>, idx: Long, mulCounter: Long): Map<String, Long> {
-        if (idx >= instructions.size) return registers
-
+        if (idx >= instructions.size && registers["jmp"]!! >= 0L) return registers
+        
         if (registers["jmp"] != 0L)
             return run(registers.plus(Pair("jmp", 0L)), instructions, idx - 1 + registers["jmp"]!!, mulCounter)
 
