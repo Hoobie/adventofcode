@@ -48,6 +48,11 @@ object Day23CoprocessorConflagration {
                     in regRegex -> SetFromRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("set")
                 }
+                "add" -> when (tokens[2]) {
+                    in intRegex -> Add(tokens[1], tokens[2].toInt())
+                    in regRegex -> AddRegister(tokens[1], tokens[2])
+                    else -> throw IllegalArgumentException("add")
+                }
                 "sub" -> when (tokens[2]) {
                     in intRegex -> Sub(tokens[1], tokens[2].toInt())
                     in regRegex -> SubRegister(tokens[1], tokens[2])
