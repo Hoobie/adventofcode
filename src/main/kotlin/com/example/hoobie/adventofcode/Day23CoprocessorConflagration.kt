@@ -1,6 +1,5 @@
 package com.example.hoobie.adventofcode
 
-import com.example.hoobie.adventofcode.day18.*
 import com.example.hoobie.adventofcode.utils.*
 import com.example.hoobie.adventofcode.utils.Set
 
@@ -88,7 +87,6 @@ object Day23CoprocessorConflagration {
 
         return run(instructions[idx.toInt()].eval(registers), instructions, idx + 1, newMulCounter)
     }
-
 
 }
 

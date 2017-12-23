@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode.day18
+package com.example.hoobie.adventofcode.utils
 
 val intRegex = Regex("-?\\d+")
 val regRegex = Regex("\\w")
