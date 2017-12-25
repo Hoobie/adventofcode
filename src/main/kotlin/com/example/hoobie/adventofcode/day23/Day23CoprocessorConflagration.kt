@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode
+package com.example.hoobie.adventofcode.day23
 
 import com.example.hoobie.adventofcode.utils.*
 import com.example.hoobie.adventofcode.utils.Set
