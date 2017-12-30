@@ -115,7 +115,7 @@ object Day22SporificaVirus {
 
     private tailrec fun work(x: Int, y: Int, direction: Pair<Int, Int>, grid: List<List<Char>>, bursts: Int, infections: Long): Long {
         if (bursts <= 0) return infections
-        
+
         val enlargedGrid = if (x < 0 || x >= grid.size || y < 0 || y >= grid.size) enlargeGrid(grid) else grid
         val newX = if (enlargedGrid.size != grid.size) x + grid.size else x
         val newY = if (enlargedGrid.size != grid.size) y + grid.size else y

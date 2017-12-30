@@ -34,7 +34,6 @@ What is the largest value in any register after completing the instructions in y
 To be safe, the CPU also needs to know the highest value held in any register during this process
 so that it can decide how much memory to allocate to these operations. For example, in the above instructions,
 the highest value ever held was 10 (in register c after the third instruction was evaluated).
-
  */
 
 object Day8IHeardYouLikeRegisters {
@@ -66,9 +65,9 @@ object Day8IHeardYouLikeRegisters {
         }.fold(Pair(hashMapOf(), 0), { acc: Pair<Map<String, Int>, Int>, ins ->
             val newRegister = ins.eval(acc.first)
             val maxValue = newRegister.values.max()!!
-            Pair(newRegister, if (maxValue > acc.second) maxValue else acc.second )
+            Pair(newRegister, if (maxValue > acc.second) maxValue else acc.second)
         })
-        
+
         return Pair(registersAndMaxValue.first.values.max()!!, registersAndMaxValue.second)
     }
 

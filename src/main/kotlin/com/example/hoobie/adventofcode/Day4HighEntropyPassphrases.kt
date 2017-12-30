@@ -56,8 +56,8 @@ object Day4HighEntropyPassphrases {
 
     private fun sortLetters(word: String): String {
         val chars = word.toCharArray()
-        chars.sort() // mutable function, wtf?
-        return String(chars) // chars.toString does not work !!!
+        chars.sort()
+        return String(chars)
     }
 
 }

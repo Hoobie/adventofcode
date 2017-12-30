@@ -336,7 +336,7 @@ object Day13PacketScanners {
     private tailrec fun getDelayTailRec(layer: Int, maxLayer: Int, scannersPositions: Map<Int, Pair<Int, Int>>,
                                         positionsCache: Map<Int, Pair<Int, Int>>, scannersRanges: Map<Int, Int>, delay: Int): Int {
         if (layer > maxLayer) return delay
-        
+
         if (scannersPositions[layer]?.first == 1) {
             val scannersInitials = moveScanners(positionsCache, scannersRanges)
             return getDelayTailRec(0, maxLayer, scannersInitials, scannersInitials, scannersRanges, delay + 1)

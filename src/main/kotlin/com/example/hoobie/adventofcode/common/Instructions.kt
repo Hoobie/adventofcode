@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode.utils
+package com.example.hoobie.adventofcode.common
 
 abstract class Instruction(open val destReg: String) {
     abstract fun eval(registers: Map<String, Long>): Map<String, Long>

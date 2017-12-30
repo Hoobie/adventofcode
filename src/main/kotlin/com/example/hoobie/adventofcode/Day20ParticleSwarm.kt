@@ -97,7 +97,7 @@ object Day20ParticleSwarm {
             collide(0, acc.map { it.move() })
         }).size
     }
-    
+
     private fun parseParticles(input: String): List<Particle> {
         return input.split("\n")
                 .map {

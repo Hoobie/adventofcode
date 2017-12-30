@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode.day18
+package com.example.hoobie.adventofcode
 
 import spock.lang.Specification
 

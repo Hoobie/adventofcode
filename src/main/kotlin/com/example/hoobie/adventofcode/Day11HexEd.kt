@@ -121,7 +121,7 @@ object Day11HexEd {
                 .patch(1, eq5[1] + sw)
                 .patch(2, eq5[2] - sw)
     }
-    
+
 }
 
 private val inputFileName = "day11.txt"

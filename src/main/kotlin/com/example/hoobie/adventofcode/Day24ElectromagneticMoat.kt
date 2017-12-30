@@ -78,7 +78,7 @@ object Day24ElectromagneticMoat {
         val init = listOf(listOf(inventory.find { it.inPins == 0 }!!))
 
         val bridges = buildBridges(init, inventory.filter { it.inPins != 0 })
-        
+
         return countMaxStrength(listOf(), bridges)
     }
 
@@ -116,7 +116,7 @@ object Day24ElectromagneticMoat {
         val newBridgesHashes = if (modified && notContains) bridgesHashes + bridgeHash else bridgesHashes
         val newBridges = if (modified && notContains) bridges + listOf(bridge) else bridges
         val newIdx = if (modified && notContains) idx + 2 else idx + 1
-        
+
         return applyComponent(newBridges, newIdx, component, newBridgesHashes)
     }
 

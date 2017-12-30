@@ -1,6 +1,6 @@
-package com.example.hoobie.adventofcode.utils
+package com.example.hoobie.adventofcode.common
 
 val intRegex = Regex("-?\\d+")
-val regRegex = Regex("\\w")
+val letterRegex = Regex("\\w")
 
 operator fun Regex.contains(text: CharSequence): Boolean = this.matches(text)

@@ -1,7 +1,8 @@
-package com.example.hoobie.adventofcode.day23
+package com.example.hoobie.adventofcode
 
-import com.example.hoobie.adventofcode.utils.*
-import com.example.hoobie.adventofcode.utils.Set
+import com.example.hoobie.adventofcode.common.*
+import com.example.hoobie.adventofcode.common.Set
+import com.example.hoobie.adventofcode.utils.FileUtil
 
 /*
 You decide to head directly to the CPU and fix the printer from there. As you get close, 
@@ -45,28 +46,28 @@ object Day23CoprocessorConflagration {
             when (tokens[0]) {
                 "set" -> when (tokens[2]) {
                     in intRegex -> Set(tokens[1], tokens[2].toLong())
-                    in regRegex -> SetFromRegister(tokens[1], tokens[2])
+                    in letterRegex -> SetFromRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("set")
                 }
                 "add" -> when (tokens[2]) {
                     in intRegex -> Add(tokens[1], tokens[2].toInt())
-                    in regRegex -> AddRegister(tokens[1], tokens[2])
+                    in letterRegex -> AddRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("add")
                 }
                 "sub" -> when (tokens[2]) {
                     in intRegex -> Sub(tokens[1], tokens[2].toInt())
-                    in regRegex -> SubRegister(tokens[1], tokens[2])
+                    in letterRegex -> SubRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("add")
                 }
                 "mul" -> when (tokens[2]) {
                     in intRegex -> Mul(tokens[1], tokens[2].toInt())
-                    in regRegex -> MulRegister(tokens[1], tokens[2])
+                    in letterRegex -> MulRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("mul")
                 }
                 "jnz" -> {
                     if (tokens[1] in intRegex && tokens[2] in intRegex)
                         Jnz(tokens[1].toLong(), tokens[2].toLong())
-                    else if (tokens[1] in regRegex && tokens[2] in intRegex)
+                    else if (tokens[1] in letterRegex && tokens[2] in intRegex)
                         Jrnz(tokens[1], tokens[2].toLong())
                     else Jrnzr(tokens[1], tokens[2])
                 }
@@ -83,7 +84,7 @@ object Day23CoprocessorConflagration {
 
     private tailrec fun run(registers: Map<String, Long>, instructions: List<Instruction>, idx: Long, mulCounter: Long): Map<String, Long> {
         if (idx >= instructions.size && registers["jmp"]!! >= 0L) return registers
-        
+
         if (registers["jmp"] != 0L)
             return run(registers.plus(Pair("jmp", 0L)), instructions, idx - 1 + registers["jmp"]!!, mulCounter)
 

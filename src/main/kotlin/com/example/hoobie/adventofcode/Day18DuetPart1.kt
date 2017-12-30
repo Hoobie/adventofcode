@@ -1,7 +1,8 @@
-package com.example.hoobie.adventofcode.day18
+package com.example.hoobie.adventofcode
 
-import com.example.hoobie.adventofcode.utils.*
-import com.example.hoobie.adventofcode.utils.Set
+import com.example.hoobie.adventofcode.common.*
+import com.example.hoobie.adventofcode.common.Set
+import com.example.hoobie.adventofcode.utils.FileUtil
 
 /*
 --- Day 18: Duet ---
@@ -64,29 +65,29 @@ object Day18DuetPart1 {
                 "snd" -> Sound(tokens[1])
                 "set" -> when (tokens[2]) {
                     in intRegex -> Set(tokens[1], tokens[2].toLong())
-                    in regRegex -> SetFromRegister(tokens[1], tokens[2])
+                    in letterRegex -> SetFromRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("set")
                 }
                 "add" -> when (tokens[2]) {
                     in intRegex -> Add(tokens[1], tokens[2].toInt())
-                    in regRegex -> AddRegister(tokens[1], tokens[2])
+                    in letterRegex -> AddRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("add")
                 }
                 "mul" -> when (tokens[2]) {
                     in intRegex -> Mul(tokens[1], tokens[2].toInt())
-                    in regRegex -> MulRegister(tokens[1], tokens[2])
+                    in letterRegex -> MulRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("mul")
                 }
                 "mod" -> when (tokens[2]) {
                     in intRegex -> Mod(tokens[1], tokens[2].toInt())
-                    in regRegex -> ModRegister(tokens[1], tokens[2])
+                    in letterRegex -> ModRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("mod")
                 }
                 "rcv" -> RecoverSound(tokens[1])
                 "jgz" -> {
                     if (tokens[1] in intRegex && tokens[2] in intRegex)
                         Jgz(tokens[1].toLong(), tokens[2].toLong())
-                    else if (tokens[1] in regRegex && tokens[2] in intRegex)
+                    else if (tokens[1] in letterRegex && tokens[2] in intRegex)
                         Jrgz(tokens[1], tokens[2].toLong())
                     else Jrgzr(tokens[1], tokens[2])
                 }

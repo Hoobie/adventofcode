@@ -1,4 +1,4 @@
-package com.example.hoobie.adventofcode.day23
+package com.example.hoobie.adventofcode
 
 /*
 set b 65
@@ -63,10 +63,10 @@ fun main(args: Array<String>) {
 //        b += 17
 //    }
 
-    (106500..c + 1 step 17)
+    (b..c + 1 step 17)
             .filterNot { isPrime(it) }
             .forEach { h += 1 }
-    
+
     println(h)
 }
 

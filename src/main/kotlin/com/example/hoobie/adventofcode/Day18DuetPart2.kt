@@ -1,7 +1,8 @@
-package com.example.hoobie.adventofcode.day18
+package com.example.hoobie.adventofcode
 
-import com.example.hoobie.adventofcode.utils.*
-import com.example.hoobie.adventofcode.utils.Set
+import com.example.hoobie.adventofcode.common.*
+import com.example.hoobie.adventofcode.common.Set
+import com.example.hoobie.adventofcode.utils.FileUtil
 
 /*
 --- Part Two ---
@@ -49,34 +50,34 @@ object Day18DuetPart2 {
             when (tokens[0]) {
                 "snd" -> when (tokens[1]) {
                     in intRegex -> Send(tokens[1].toLong())
-                    in regRegex -> SendRegister(tokens[1])
+                    in letterRegex -> SendRegister(tokens[1])
                     else -> throw IllegalArgumentException("snd")
                 }
                 "set" -> when (tokens[2]) {
                     in intRegex -> Set(tokens[1], tokens[2].toLong())
-                    in regRegex -> SetFromRegister(tokens[1], tokens[2])
+                    in letterRegex -> SetFromRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("set")
                 }
                 "add" -> when (tokens[2]) {
                     in intRegex -> Add(tokens[1], tokens[2].toInt())
-                    in regRegex -> AddRegister(tokens[1], tokens[2])
+                    in letterRegex -> AddRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("add")
                 }
                 "mul" -> when (tokens[2]) {
                     in intRegex -> Mul(tokens[1], tokens[2].toInt())
-                    in regRegex -> MulRegister(tokens[1], tokens[2])
+                    in letterRegex -> MulRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("mul")
                 }
                 "mod" -> when (tokens[2]) {
                     in intRegex -> Mod(tokens[1], tokens[2].toInt())
-                    in regRegex -> ModRegister(tokens[1], tokens[2])
+                    in letterRegex -> ModRegister(tokens[1], tokens[2])
                     else -> throw IllegalArgumentException("mod")
                 }
                 "rcv" -> Receive(tokens[1])
                 "jgz" -> {
                     if (tokens[1] in intRegex && tokens[2] in intRegex)
                         Jgz(tokens[1].toLong(), tokens[2].toLong())
-                    else if (tokens[1] in regRegex && tokens[2] in intRegex)
+                    else if (tokens[1] in letterRegex && tokens[2] in intRegex)
                         Jrgz(tokens[1], tokens[2].toLong())
                     else Jrgzr(tokens[1], tokens[2])
                 }
@@ -89,8 +90,8 @@ object Day18DuetPart2 {
                     acc.plus(Pair(instr.destReg, 0L))
                 })
 
-        val program1 = Program(0, registers, instructions, 0, listOf(), 0)
-        val program2 = Program(1, registers.plus(Pair("p", 1L)), instructions, 0, listOf(), 0)
+        val program1 = Program(0, registers, instructions)
+        val program2 = Program(1, registers.plus(Pair("p", 1L)), instructions)
 
         return run(program1, program2)
     }
@@ -127,9 +128,9 @@ object Day18DuetPart2 {
     private data class Program(val id: Int,
                                val regs: Map<String, Long>,
                                val instructions: List<Instruction>,
-                               val counter: Int,
-                               val queue: List<Long>,
-                               val sendCounter: Long)
+                               val counter: Int = 0,
+                               val queue: List<Long> = listOf(),
+                               val sendCounter: Long = 0L)
 
 }
 

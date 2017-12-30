@@ -12,7 +12,7 @@ class Day14DiskDefragmentationSpec extends Specification {
         input      || result
         "flqrgnkx" || 8108
     }
-    
+
     def "should count regions"() {
         expect:
         new Day14DiskDefragmentation().countRegions(input) == result

@@ -90,17 +90,17 @@ object Day21FractalArt {
 
     fun countTurnedOnPixels(input: String, iterations: Int): Int {
         val rules = readRules(input)
-        
+
         val pattern = (0 until iterations).fold(startPattern, { acc, _ ->
             val divided = divide(acc)
-            
+
             val transformed = divided.map {
                 it.map { transform(it, rules) }
             }
-            
+
             merge(transformed)
         })
-        
+
         return pattern.toCharArray().fold(0, { acc, c ->
             if (c == '#') acc + 1
             else acc
