@@ -155,4 +155,5 @@ def "should merge"() {
 
 ### Last few words
 All my solutions can be found on my GitHub: https://github.com/Hoobie/adventofcode
+
 They are written in Kotlin and almost all of them are [functional](https://en.wikipedia.org/wiki/Functional_programming).
