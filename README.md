@@ -1,7 +1,7 @@
 # Advent of Code: Were you nice or naughty this year?
 
 ## What's going on?
-Advent of Code is an annual programming challenge which consists of 25 (2-part) puzzles at different difficulty levels.
+[Advent of Code](http://adventofcode.com/2017) is an annual programming challenge which consists of 25 (2-part) puzzles at different difficulty levels.
 I heard about it on our company's chat and it's the first edition I participated. The event itself is a great opportunity to learn 
 a new programming language (I've got familiar with Kotlin) and to compare your solutions with friends.
 This year's plot was about the Santa's broken printer. We were shrunken and sent inside the computer to fix it in 25 ~~days~~ milliseconds.
