@@ -13,7 +13,7 @@ where the previous days were visibly harder and skipped by a lot of people. E.g.
 which was tackled by the top user in above 19 minutes. This puzzle required to optimize the assembly-like code instead of just computing a result.
 Finally, just over 3000 competitors survived the whole 25 days.
 
-![stats](stats.png){:height="640px" width="480px"}
+![stats](stats.png)
 
 ## An example solution (spoiler alert)
 This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the toughest.
