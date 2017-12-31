@@ -2,7 +2,7 @@
 
 ## What's going on?
 Advent of Code is an annual programming challenge which consists of 25 (2-part) puzzles at different difficulty levels.
-I heard about it on our Slack and it's the first edition I participated. The event itself is a great opportunity to learn 
+I heard about it on our company's Slack and it's the first edition I participated. The event itself is a great opportunity to learn 
 a new programming language (I've got familiar with Kotlin) and to compare your solutions with friends.
 This year's plot was about the Santa's broken printer. We were shrunken and sent inside the computer to fix it in 25 ~~days~~ milliseconds.
 
@@ -13,7 +13,7 @@ where the previous days were visibly harder and skipped by a lot of people. E.g.
 which was tackled by the top user in above 19 minutes. This puzzle required to optimize the assembly-like code instead of just computing a result.
 Finally, just over 3000 competitors survived the whole 25 days.
 
-![stats](stats.png)
+![stats](stats.png){:height="640px" width="480px"}
 
 ## An example solution (spoiler alert)
 This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the toughest.
@@ -44,6 +44,8 @@ For example, the book may look like this:
 Pattern's rows are separated by slashes.
 
 The puzzle was to count turned on pixels (`#`) after n iterations.
+
+The whole content is available on: http://adventofcode.com/2017/day/21
 
 ### The main part
 We have to repeat the process of:
