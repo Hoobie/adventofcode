@@ -5,6 +5,9 @@
 I heard about it on our company's chat and it's the first edition I participated. The event itself is a great opportunity to learn 
 a new programming language (I've got familiar with Kotlin) and to compare your solutions with friends.
 This year's plot was about the Santa's broken printer. We were shrunken and sent inside the computer to fix it in 25 ~~days~~ milliseconds.
+One of the awards for solving all the tasks (apart from satisfaction and improvement of skills) is a procedurally-generated in real time, beautiful motherboard.
+
+![stats](calendar.png)
 
 ## Some stats
 The first puzzle was finished by over 37 000 people. Each day this number was decreasing despite the 4th, 8th, 15th and 22nd day,
@@ -16,7 +19,7 @@ Finally, just over 3000 competitors survived the whole 25 days.
 ![stats](stats.png)
 
 ## An example solution (spoiler alert)
-This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the toughest.
+This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the most labour-intensive.
 
 ### Intro
 We start with the following ASCII art:
@@ -94,7 +97,7 @@ fun divide(lines: List<String>, divider: Int): List<List<String>> =
 The first map uses the Kotlin's feature which produces a list of chunks with specified size.
 This is made twice as we want to divide columns and rows as well.
 Then, we need to group our pixels by indexes in chunks to produce proper patterns.
-Finally, we have to merge rows together.
+Finally, we have to merge rows together with slashes.
 You can see better how it works by looking at a [Spock](http://spockframework.org/) specification for the `divide` function:
 ```groovy
 def "should divide"() {
@@ -157,3 +160,10 @@ def "should merge"() {
 All my solutions can be found on my GitHub: https://github.com/Hoobie/adventofcode
 
 They are written in Kotlin and almost all of them are [functional](https://en.wikipedia.org/wiki/Functional_programming).
+
+## Summary
+I hope you had fun reading this post and maybe even solving whole Advent of Code. If you are going to join the next year's edition,
+we won't meet, unfortunately. It is all because of spending not too much time with my wife who was angry at me - polishing my solutions.
+And, if you have any remarks, let us know in comments.
+
+Happy New Year to everyone!
