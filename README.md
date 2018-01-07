@@ -13,13 +13,16 @@ One of the awards for solving all the tasks (apart from satisfaction and improve
 The first puzzle was finished by over 37 000 people. Each day this number was decreasing despite the 4th, 8th, 15th and 22nd day,
 where the previous days were visibly harder and skipped by a lot of people. E.g. the fastest solution of the 21st task was
 10 minutes 9 seconds in opposite to the next day's 6 minutes 2 seconds. The hardest task overall seems to be the 23rd day's second part
-which was tackled by the top user in above 19 minutes. This puzzle required to optimize the assembly-like code instead of just computing a result.
+which was tackled by the top programmer in above 19 minutes. This puzzle required to optimize the assembly-like code instead of just computing a result.
 Finally, just over 3000 competitors survived the whole 25 days.
 
 ![stats](stats.png)
 
+## How are they so fast?
+TOP100 programmers were so fast that I couldn't even imagine how they managed to achieve that great times. Therefore I asked the TOPX hacker...
+
 ## An example solution (spoiler alert)
-This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the most labour-intensive.
+This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the most labour-intensive and my favorites.
 
 ### Intro
 We start with the following ASCII art:
