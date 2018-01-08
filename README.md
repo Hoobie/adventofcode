@@ -19,7 +19,32 @@ Finally, just over 3000 competitors survived the whole 25 days.
 ![stats](stats.png)
 
 ## How are they so fast?
-TOP100 programmers were so fast that I couldn't even imagine how they managed to achieve that great times. Therefore I asked the TOPX hacker...
+TOP100 programmers were so fast that I couldn't even imagine how they managed to achieve that great times. 
+Therefore I asked the TOP4 hacker - Samuel Cormier-Iijima (sciyoshi) about his experience with AoC.
+
+>This was my first year participating in AoC, but I've been programming in Python for over 10 years. 
+You can save time by building a good toolbox (mine had some tools for reading the puzzle input, 
+and some helper classes/functions for 2D grids), 
+but the most important part is understanding the basics of strings, arrays, sets, hashmaps, 
+and regexes in your chosen language as well as some foundational algorithms 
+(recursion, dynamic programming, DFS/BFS/topological sort). 
+I also skipped straight to the puzzle descriptions and went for the simplest approach 
+I knew would work. In tricky cases where I was unsure of something (usually related to off-by-ones) 
+I'd run my program against the sample input. 
+The hard part for me was keeping to a schedule and doing the problems each night at 12AM, 
+and I also struggled on some days (#6, #11 and #24) 
+where I either rushed and didn't read carefully enough or my brain just wasn't working. 
+My favorite problem was probably #23 which involves decompiling rather than writing code, 
+which I don't get to do very often! I also used this as an opportunity to practice Rust, 
+which I learned a few years ago and really love but don't get to use regularly.
+
+You can see Samuel's solutions here: https://github.com/sciyoshi/advent-of-rust-2017
+
+I chose a different path of completing AoC. I focused on practising Kotlin, functional programming and paying attention to some aspects of clean code.
+Usually, I was solving the puzzles just after work, sometimes I had to catch up a couple of days in a row. 
+It would also be difficult to keep up with the schedule since in Poland the tasks were published very early in the morning.
+I agree with Samuel that some parts of code could be reused between puzzles and it was very helpful. Another crucial thing was to choose
+a programming language wisely for this type of contest. I would recommend Python.
 
 ## An example solution (spoiler alert)
 This paragraph presents an example functional solution of the 21st day's "Fractal Art" exercise which was one of the most labour-intensive and my favorites.
