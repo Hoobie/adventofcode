@@ -18,7 +18,7 @@ Finally, just over 3000 competitors survived the whole 25 days.
 
 ![stats](stats.png)
 
-## How are they so fast?
+## How were they so fast?
 TOP100 programmers were so fast that I couldn't even imagine how they managed to achieve that great times. 
 Therefore I asked the TOP4 hacker - Samuel Cormier-Iijima (sciyoshi) about his experience with AoC.
 
