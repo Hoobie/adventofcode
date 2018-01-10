@@ -190,8 +190,7 @@ All my solutions can be found on my GitHub: https://github.com/Hoobie/adventofco
 They are written in Kotlin and almost all of them are [functional](https://en.wikipedia.org/wiki/Functional_programming).
 
 ## Summary
-I hope you had fun reading this post and maybe even solving whole Advent of Code. If you are going to join the next year's edition,
-we won't meet, unfortunately. It is all because of spending not too much time with my wife who was angry at me - polishing my solutions.
+I hope you had fun reading this post and maybe even solving whole Advent of Code. Remember, even if you didn’t finish some of the puzzles, you still can. There is no time limit. The puzzles from the previous editions are also available.
 And, if you have any remarks, let us know in comments.
 
 Happy New Year to everyone!
