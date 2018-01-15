@@ -128,30 +128,27 @@ object Day21FractalArt {
         else throw IllegalArgumentException("divide")
     }
 
-    private fun divide(lines: List<String>, divider: Int): List<List<String>> {
-        return lines
-                .map { it.chunked(divider) }.chunked(divider)
-                .map { groupByIndex(it) }
-                .map { it.map { it.joinToString("/") } }
-    }
+    private fun divide(lines: List<String>, divider: Int): List<List<String>> =
+            lines
+                    .map { it.chunked(divider) }.chunked(divider)
+                    .map { groupByIndex(it) }
+                    .map { it.map { it.joinToString("/") } }
 
-    private fun merge(dividedPattern: List<List<String>>): String {
-        return dividedPattern.map { it.map { it.split("/") } }
-                .map { groupByIndex(it) }
-                .joinToString("/") {
-                    it.joinToString("/") {
-                        it.joinToString("")
+    private fun merge(dividedPattern: List<List<String>>): String =
+            dividedPattern.map { it.map { it.split("/") } }
+                    .map { groupByIndex(it) }
+                    .joinToString("/") {
+                        it.joinToString("/") {
+                            it.joinToString("")
+                        }
                     }
-                }
-    }
 
-    private fun groupByIndex(it: List<List<String>>): List<List<String>> {
-        return it.fold(linkedMapOf(), { acc: Map<Int, List<String>>, list ->
-            val pairs = list.mapIndexed { i, elem -> Pair(i, listOf(elem)) }
-            val newPairs = pairs.map { Pair(it.first, acc[it.first]?.plus(it.second) ?: it.second) }
-            acc + newPairs
-        }).values.toList()
-    }
+    private fun groupByIndex(it: List<List<String>>): List<List<String>> =
+            it.fold(linkedMapOf(), { acc: Map<Int, List<String>>, list ->
+                val pairs = list.mapIndexed { i, elem -> Pair(i, listOf(elem)) }
+                val newPairs = pairs.map { Pair(it.first, acc[it.first]?.plus(it.second) ?: it.second) }
+                acc + newPairs
+            }).values.toList()
 
     private tailrec fun transform(pattern: String, rules: Map<String, String>, rotateCounter: Int = 0): String {
         if (rotateCounter > 3) throw IllegalArgumentException("transform")
